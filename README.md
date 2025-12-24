@@ -35,7 +35,7 @@ Slamet Santoso
 
 ## 🚀 Deployment
 - Platform: GitHub Pages / Nginx (VPS)
-- Domain: (menyusul)
+- Domain: https://nexatech.my.id/
 
 ---
 
@@ -53,5 +53,4 @@ Slamet Santoso
 Project ini dikelola menggunakan GitHub sebagai version control dan dikerjakan secara kolaboratif oleh seluruh 
 anggota kelompok Nexa-Tech.
 
-## 🌐 Live Demo
-https://donisetiawan12.github.io/nexa-tech/
+
