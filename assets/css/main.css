@@ -3009,3 +3009,16 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 60%);
   font-size: 14px;
 }
+
+.service-content {
+  display: none;
+}
+
+.service-content.active {
+  display: block;
+}
+
+.services-list a.active {
+  font-weight: 600;
+  color: var(--accent-color);
+}
