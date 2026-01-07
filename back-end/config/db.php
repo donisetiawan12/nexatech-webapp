@@ -1,11 +1,13 @@
 <?php
-$host = "localhost";
-$user = "db_user_public";
-$pass = "db_password_public";
+$host = "127.0.0.1";
+$user = "root";
+$pass = "";
 $db   = "nexatech_auth";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
 if (!$conn) {
-    die("Koneksi database gagal");
+    die("Koneksi database gagal: " . mysqli_connect_error());
 }
+
+echo "Koneksi berhasil";

@@ -2,6 +2,12 @@
 session_start();
 ?>
 
+<?php
+$success = isset($_GET['status']) && $_GET['status'] === 'success';
+?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,6 +102,14 @@ session_start();
 
       </div>
     </header>
+            <?php if ($success) { ?>
+              <div class="container mt-8">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  ✅ <strong>Pesan berhasil dikirim!</strong> Tim NexaTech akan segera menghubungi Anda.
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+              </div>
+            <?php } ?>
 
     <main class="main">
       <!-- Hero Section -->
@@ -1503,11 +1517,12 @@ session_start();
             </div>
 
             <div class="col-lg-8">
+             
               <form
-                action="forms/contact.php"
+                action="forms/submit_form.php"
                 method="post"
                 role="form"
-                class="php-email-form"
+                class="contact-form"
               >
                 <div class="row">
                   <div class="col-md-6 form-group">
@@ -1516,7 +1531,7 @@ session_start();
                       name="name"
                       class="form-control"
                       id="name"
-                      placeholder="Your Name"
+                      placeholder="Nama Kamu"
                       required=""
                     />
                   </div>
@@ -1526,21 +1541,33 @@ session_start();
                       class="form-control"
                       name="email"
                       id="email"
-                      placeholder="Your Email"
+                      placeholder="Email Kamu"
                       required=""
                     />
                   </div>
                 </div>
-                <div class="form-group mt-3">
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="subject"
-                    id="subject"
-                    placeholder="Subject"
-                    required=""
-                  />
+                <div class="row">
+                  <div class="col-md-6 form-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="whatsapp"
+                      placeholder="WhatsApp Number"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 form-group mt-3 mt-md-0">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="subject"
+                      id="subject"
+                      placeholder="Subject"
+                      required=""
+                    />
+                  </div>
                 </div>
+                
                 <div class="form-group mt-3">
                   <textarea
                     class="form-control"
@@ -1549,15 +1576,9 @@ session_start();
                     required=""
                   ></textarea>
                 </div>
-                <div class="my-3">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">
-                    Your message has been sent. Thank you!
-                  </div>
-                </div>
+               
                 <div class="text-center">
-                  <button type="submit">Send Message</button>
+                  <button type="submit">Kirim Pesan</button>
                 </div>
               </form>
             </div>
@@ -1675,9 +1696,18 @@ session_start();
     <!-- Preloader -->
     <div id="preloader"></div>
 
+
+    <script>
+setTimeout(() => {
+  const alert = document.querySelector('.alert');
+  if (alert) alert.remove();
+}, 5000);
+</script>
+
+
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
     <script src="assets/vendor/aos/aos.js"></script>
     <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
     <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>

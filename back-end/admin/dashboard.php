@@ -1,11 +1,29 @@
 <?php
 session_start();
+require_once "../config/db.php";
 
+// proteksi admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../index.php");
     exit;
 }
+
+// =====================
+// QUERY DASHBOARD
+// =====================
+// total users
+$userResult = mysqli_query($conn, "SELECT COUNT(*) AS total_users FROM users");
+$userData = mysqli_fetch_assoc($userResult);
+$totalUsers = $userData['total_users'];
+
+// total contacts
+$contactResult = mysqli_query($conn, "SELECT COUNT(*) AS total_contacts FROM contacts");
+$contactData = mysqli_fetch_assoc($contactResult);
+$totalContacts = $contactData['total_contacts'];
+
+
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -89,17 +107,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
+              <a class="sidebar-link" href="daftar_contact.php" aria-expanded="false">
                 <i class="ti ti-archive"></i>
                 <span class="hide-menu">List Contact Form</span>
               </a>
             </li>
-            <li class="sidebar-item">
+            <!-- <li class="sidebar-item">
               <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
                 <i class="ti ti-file"></i>
-                <span class="hide-menu">Sample Page</span>
+                <span class="hide-menu">Laporan</span>
               </a>
-            </li>
+            </li> -->
              <li class="nav-small-cap">
               <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
               <span class="hide-menu">Pages</span>
@@ -159,14 +177,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                    <!-- <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-mail fs-6"></i>
                       <p class="mb-0 fs-3">My Account</p>
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                    </a> -->
+                    <!-- <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
-                    </a>
+                    </a> -->
                         <a href="../auth/logout.php"
                         class="btn btn-outline-primary mx-3 mt-2 d-block">
                         Logout
@@ -188,25 +206,27 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                 <div class="card-body">
                   <div class="d-md-flex align-items-center">
                     <div>
-                      <h4 class="card-title">Data Penjualan</h4>
+                      <h4 class="card-title">Total Users & Contact</h4>
                       <p class="card-subtitle">
-                        Website Landing Page and Server
+                        Data Users & Contact From 
                       </p>
                     </div>
                     <div class="ms-auto">
                       <ul class="list-unstyled mb-0">
                         <li class="list-inline-item text-primary">
                           <span class="round-8 text-bg-primary rounded-circle me-1 d-inline-block"></span>
-                          Website Landing Page
+                          Total Users
                         </li>
                         <li class="list-inline-item text-info">
                           <span class="round-8 text-bg-info rounded-circle me-1 d-inline-block"></span>
-                          Server
+                          Total Pesan Masuk
                         </li>
                       </ul>
                     </div>
                   </div>
-                  <div id="sales-overview" class="mt-4 mx-n6"></div>
+                  <div class="card-body">
+                    <canvas id="dashboardChart" height="110"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
@@ -223,6 +243,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
       </div>
     </div>
   </div>
+
+ 
+
   <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/sidebarmenu.js"></script>
@@ -230,6 +253,81 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
   <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="../assets/js/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const canvas = document.getElementById("dashboardChart");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  // 🎨 Gradient
+  const gradientUsers = ctx.createLinearGradient(0, 0, 0, 300);
+  gradientUsers.addColorStop(0, "rgba(1, 51, 126, 0.9)");
+  gradientUsers.addColorStop(1, "rgba(2, 33, 80, 1)");
+
+  const gradientContacts = ctx.createLinearGradient(0, 0, 0, 300);
+  gradientContacts.addColorStop(0, "rgba(19, 156, 247, 1)");
+  gradientContacts.addColorStop(1, "rgba(2, 119, 243, 0.3)");
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Users", "Pesan Masuk"],
+      datasets: [{
+        data: [<?= (int)$totalUsers ?>, <?= (int)$totalContacts ?>],
+        backgroundColor: [gradientUsers, gradientContacts],
+        borderRadius: 12,
+        barThickness: 60,
+        hoverBackgroundColor: [
+          "rgba(4, 40, 140, 1)",
+          "rgba(85, 179, 241, 1)"
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 1200,
+        easing: "easeOutQuart"
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#111",
+          titleColor: "#fff",
+          bodyColor: "#fff",
+          padding: 12,
+          cornerRadius: 8
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            font: { size: 13, weight: "600" }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0,0,0,0.05)"
+          },
+          ticks: {
+            stepSize: 1,
+            font: { size: 12 }
+          }
+        }
+      }
+    }
+  });
+});
+</script>
+
+
   <!-- solar icons -->
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </body>

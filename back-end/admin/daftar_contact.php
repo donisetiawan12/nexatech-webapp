@@ -1,13 +1,13 @@
 <?php
 session_start();
-require_once "../config/db.php";
+include "../config/db.php"; // ⬅️ INI YANG KURANG
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../index.php");
     exit;
 }
 
-$data = mysqli_query($conn, "SELECT * FROM users ORDER BY created_at ASC");
+$data = mysqli_query($conn, "SELECT * FROM contacts ORDER BY created_at ASC");
 ?>
 
 
@@ -80,7 +80,7 @@ $data = mysqli_query($conn, "SELECT * FROM users ORDER BY created_at ASC");
               <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
               <span class="hide-menu">Extra</span>
             </li>
-            <li class="sidebar-item active">
+            <li class="sidebar-item ">
               <a class="sidebar-link justify-content-between"  
                 href="users.php" aria-expanded="false">
                 <div class="d-flex align-items-center gap-3">
@@ -92,7 +92,7 @@ $data = mysqli_query($conn, "SELECT * FROM users ORDER BY created_at ASC");
                 
               </a>
             </li>
-            <li class="sidebar-item">
+            <li class="sidebar-item active">
               <a class="sidebar-link" href="daftar_contact.php" aria-expanded="false">
                 <i class="ti ti-archive"></i>
                 <span class="hide-menu">List Contact Form</span>
@@ -192,55 +192,54 @@ $data = mysqli_query($conn, "SELECT * FROM users ORDER BY created_at ASC");
                 <div class="card-body">
                   <div class="d-md-flex align-items-center">
                     <div>
-                      <h4 class="card-title">Data Users</h4>
+                      <h4 class="card-title">Daftar Contact Form</h4>
                        <p class="card-subtitle">
-                        Dashboard/Data Users
+                        Dashboard/Daftar Contact Form
                       </p>
-                      
                     </div>
-                   
                   </div>
-                  <div class="table-responsive mt-4">
-                    <table class="table mb-0 text-nowrap varient-table align-middle fs-3">
-                      <thead>
-                        <tr>
-                           <th>No</th>
-                          <th scope="col" class="px-0 text-muted">
-                            Nama
-                          </th>
-                          <th scope="col" class="px-0 text-muted">Email</th>
-                          <th scope="col" class="px-0 text-muted">
-                            Role
-                          </th>
-                          <th scope="col" class="px-0 text-muted">
-                              Tanggal Registrasi
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody class="text-center">
-                        <?php $no = 1; ?>
-                        <?php while ($row = mysqli_fetch_assoc($data)) { ?>
-                       
-                         <tr>
-                            <td><?= $no++ ?></td>
-                            <td><?= htmlspecialchars($row['name']) ?></td>
-                            <td><?= htmlspecialchars($row['email']) ?></td>
-                            <td>
-                              <span class="badge bg-<?= $row['role'] === 'admin' ? 'primary' : 'secondary' ?>">
-                                <?= htmlspecialchars($row['role']) ?>
-                              </span>
-                            </td>
-                            <td><?= date("d F Y", strtotime($row['created_at'])) ?></td>
-                          </tr>
-                          <?php } ?>
-                       
-                      </tbody>
-                    </table>
-                  </div>
+                 <div class="table-responsive mt-4">
+            <table class="table mb-0 varient-table align-middle fs-3 table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">No</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">WhatsApp</th>
+                        <th class="text-center">Subject</th>
+                        <th class="text-center">Pesan</th>
+                        <th class="text-center">Tanggal</th>
+                    </tr>
+                    </thead>
+
+                <tbody>
+              <?php $no = 1; ?>
+                    <?php while ($row = mysqli_fetch_assoc($data)) { ?>
+                    <tr>
+                    <td class="text-center"><?= $no++ ?></td>
+                    <td><?= htmlspecialchars($row['name']) ?></td>
+                    <td><?= htmlspecialchars($row['email']) ?></td>
+                  <td>
+                    <a href="https://wa.me/<?= htmlspecialchars($row['whatsapp']) ?>" target="_blank">
+                        +<?= htmlspecialchars($row['whatsapp']) ?>
+                    </a>
+                    </td>
+
+                    <td><?= htmlspecialchars($row['subject']) ?></td>
+                    <td class="message-cell"><?= nl2br(htmlspecialchars($row['message'])) ?></td>
+                    <td><?= date("d F Y", strtotime($row['created_at'])) ?></td>
+                    </tr>
+                    <?php } ?>
+
+                </tbody>
+            </table>
+            </div>
+
                 </div>
               </div>
             </div>          
-           
+                </div>
+                </div>
             
             
           </div>
@@ -261,6 +260,7 @@ $data = mysqli_query($conn, "SELECT * FROM users ORDER BY created_at ASC");
   <script src="../assets/js/dashboard.js"></script>
   <!-- solar icons -->
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+  
 </body>
 
 </html>

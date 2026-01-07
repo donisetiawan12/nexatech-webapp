@@ -16062,3 +16062,19 @@ ul {
 }
 
 /*# sourceMappingURL=styles.min.css.map */
+.message-cell {
+  max-width: 320px;
+  white-space: pre-wrap;     /* wrap + enter */
+  word-break: break-word;
+  line-height: 1.5;
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  text-align: center;
+}
+
+
+
+
