@@ -1500,7 +1500,7 @@ $success = isset($_GET['status']) && $_GET['status'] === 'success';
                   <i class="bi bi-envelope flex-shrink-0"></i>
                   <div>
                     <h4>Email:</h4>
-                    <p>custumer_service@gmail.com</p>
+                    <p>contact@gmail.com</p>
                   </div>
                 </div>
                 <!-- End Info Item -->
@@ -1604,7 +1604,7 @@ $success = isset($_GET['status']) && $_GET['status'] === 'success';
                   <strong>Phone/WA:</strong> <span>+62 851-8351-9053</span>
                 </p>
                 <p>
-                  <strong>Email:</strong> <span>contact@nexatech.my.id</span>
+                  <strong>Email:</strong> <span>custumer_service@nexatech.my.id</span>
                 </p>
               </div>
             </div>
