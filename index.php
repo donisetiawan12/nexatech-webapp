@@ -1583,7 +1583,7 @@ session_start();
                   <strong>Phone/WA:</strong> <span>+62 851-8351-9053</span>
                 </p>
                 <p>
-                  <strong>Email:</strong> <span>custumer_service@nexatech.my.id</span>
+                  <strong>Email:</strong> <span>costumer_service@nexatech.my.id</span>
                 </p>
               </div>
             </div>
