@@ -1486,7 +1486,7 @@ session_start();
                   <i class="bi bi-envelope flex-shrink-0"></i>
                   <div>
                     <h4>Email:</h4>
-                    <p>contact@nexatech.my.id</p>
+                    <p>custumer_service@gmail.com</p>
                   </div>
                 </div>
                 <!-- End Info Item -->
