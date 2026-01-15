@@ -130,7 +130,7 @@ $success = isset($_GET['status']) && $_GET['status'] === 'success';
           </div>
         </div>
       </section>
-      <!-- /Hero Section -->
+      <!-- Hero Section -->
 
       <!-- Featured Services Section -->
       <section id="featured-services" class="featured-services section">
